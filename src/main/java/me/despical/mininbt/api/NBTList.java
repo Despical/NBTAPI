@@ -22,14 +22,16 @@ public class NBTList {
 				tagListClass = Class.forName(version + ".NBTTagList");
 			}
 
-			for (Method m : tagListClass.getDeclaredMethods()) {
-				if (m.getReturnType().equals(Void.TYPE) || m.getParameterCount() != 1 || !m.getParameterTypes()[0].equals(int.class)) {
+			for (Method method : tagListClass.getDeclaredMethods()) {
+				if (method.getReturnType().equals(Void.TYPE) || method.getParameterCount() != 1 || !method.getParameterTypes()[0].equals(int.class)) {
 					continue;
 				}
-				if (m.getName().equalsIgnoreCase("remove")) {
+
+				if (method.getName().equalsIgnoreCase("remove")) {
 					continue;
 				}
-				getMethods.add(m);
+
+				getMethods.add(method);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -1,11 +1,9 @@
 package me.despical.mininbt.api;
 
-import com.sun.istack.internal.NotNull;
 import me.despical.mininbt.api.util.VersionResolver;
 import org.bukkit.inventory.ItemStack;
 
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -81,7 +79,6 @@ public class NBT {
 		return tagCompound;
 	}
 
-	@Nullable
 	public NBT getCompoundNullable(String key) {
 		try {
 			return getCompoundThrows(key);
@@ -100,12 +97,10 @@ public class NBT {
 		return compoundValue == null ? null : new NBT(compoundValue);
 	}
 
-	@NotNull
 	public NBT getCompound(String key) {
 		return getCompoundNullable(key) == null ? null : new NBT();
 	}
 
-	@Nullable
 	public NBTList getListNullable(String key) {
 		try {
 			return getListThrows(key);
@@ -157,7 +152,6 @@ public class NBT {
 		}
 	}
 
-	@NotNull
 	public NBTList getList(String key) {
 		NBTList nbt = getListNullable(key);
 		return nbt == null ? null : new NBTList();
