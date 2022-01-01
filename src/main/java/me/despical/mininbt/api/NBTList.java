@@ -16,7 +16,7 @@ public class NBTList {
 
 	static {
 		try {
-			if (VersionResolver.isCurrentEqualOrHigher(VersionResolver.ServerVersion.v1_17_R1)) {
+			if (VersionResolver.supports(17)) {
 				tagListClass = Class.forName("net.minecraft.nbt.NBTTagList");
 			} else {
 				tagListClass = Class.forName(version + ".NBTTagList");

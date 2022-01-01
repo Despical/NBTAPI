@@ -1,9 +1,5 @@
 package me.despical.mininbt.api.util;
 
-import org.bukkit.Bukkit;
-
-import static me.despical.mininbt.api.util.VersionResolver.ServerVersion.*;
-
 /**
  * An utility class for getting server's version in split NSM format.
  * This class is taken from Commons library by Despical.
@@ -15,63 +11,36 @@ import static me.despical.mininbt.api.util.VersionResolver.ServerVersion.*;
  */
 public class VersionResolver {
 
-	public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-
-	/**
-	 * Current version of server.
-	 */
-	public static final ServerVersion CURRENT_VERSION;
-
-	static {
-		CURRENT_VERSION = resolveVersion();
-	}
+	public static final String VERSION = parseVersion();
+	public static final int VER = Integer.parseInt(VERSION.substring(1).split("_")[1]);
 
 	private VersionResolver() {
 	}
 
+	private static String parseVersion() {
+		String found = null;
+
+		for (Package pack : Package.getPackages()) {
+			if (pack.getName().startsWith("org.bukkit.craftbukkit.v")) {
+				found = pack.getName().split("\\.")[3];
+				break;
+			}
+		}
+
+		if (found == null) {
+			throw new IllegalArgumentException("Failed to parse server version. Could not find any package starting with name: 'org.bukkit.craftbukkit.v'");
+		}
+
+		return found;
+	}
+
 	/**
-	 * Get the server's version.
+	 * Checks whether the server version is equal or greater than the given version.
 	 *
-	 * @return version of the server in split NMS format enum
+	 * @param version the version to compare the server version with.
+	 * @return true if the version is equal or newer, otherwise false.
 	 */
-	private static ServerVersion resolveVersion() {
-		try {
-			return ServerVersion.valueOf(VERSION);
-		} catch (IllegalArgumentException exception) {
-			return OTHER;
-		}
-	}
-
-	public static boolean isRemappedVersion() {
-		return isCurrentEqualOrHigher(v1_17_R1);
-	}
-
-	/**
-	 * Checks if current version equals or higher than the given version.
-	 *
-	 * @param version given version
-	 * @return true if current version equals or higher than given one
-	 */
-	public static boolean isCurrentEqualOrHigher(ServerVersion version) {
-		return CURRENT_VERSION.version >= version.version;
-	}
-
-	/**
-	 * Enum values of the each Minecraft version in NMS format.
-	 */
-	public enum ServerVersion {
-		v1_8_R1, v1_8_R2, v1_8_R3, v1_9_R1, v1_9_R2, v1_10_R1, v1_11_R1, v1_12_R1,
-		v1_13_R1, v1_13_R2, v1_14_R1, v1_15_R1, v1_16_R1, v1_16_R2, v1_16_R3, v1_17_R1,
-		v1_18_R1, OTHER;
-
-		private final int version;
-
-		ServerVersion() {
-			this.version = Integer.parseInt(name().replaceAll("[v_R]", ""));
-		}
-
-		int versionAsInt() {
-			return version;
-		}
+	public static boolean supports(int version) {
+		return VER >= version;
 	}
 }

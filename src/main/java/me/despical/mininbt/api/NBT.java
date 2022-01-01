@@ -16,7 +16,7 @@ public class NBT {
 
 	static {
 		try {
-			if (VersionResolver.isRemappedVersion()) {
+			if (VersionResolver.supports(17)) {
 				tagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
 				nbtBaseClass = Class.forName("net.minecraft.nbt.NBTBase");
 				nmsItemstackClass = Class.forName("net.minecraft.world.item.ItemStack");
@@ -360,7 +360,7 @@ public class NBT {
 		try {
 			Map m = null;
 
-			if (VersionResolver.isRemappedVersion()) {
+			if (VersionResolver.supports(17)) {
 				try {
 					Field f = tagCompoundClass.getDeclaredField("x");
 					f.setAccessible(true);

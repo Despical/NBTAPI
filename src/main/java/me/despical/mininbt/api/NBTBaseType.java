@@ -23,7 +23,7 @@ public enum NBTBaseType {
 		try {
 			this.name = name;
 			this.innerClazz = innerClazz;
-			this.nbtBaseClass = VersionResolver.isRemappedVersion() ? Class.forName("net.minecraft.nbt.NBTBase") : Class.forName("net.minecraft.server." + VersionResolver.VERSION + ".NBTTag" + name);
+			this.nbtBaseClass = VersionResolver.supports(17) ? Class.forName("net.minecraft.nbt.NBTBase") : Class.forName("net.minecraft.server." + VersionResolver.VERSION + ".NBTTag" + name);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
